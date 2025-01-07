@@ -3,6 +3,10 @@ import numpy as np
 import requests
 import streamlit as st
 import ast
+import gzip
+from io import BytesIO
+import gdown
+
 
 def get_card_details(card_name):
     """
@@ -138,17 +142,31 @@ def find_similar_cards_with_filters(df, card_name, n_neighbors=5, n_dimensions=1
 
 
 
-
+#https://drive.google.com/file/d/1R47yAGvLk1EsMJ80Sv2NbqNV6rO1qNw2/view?usp=drive_link
 
 def main():
     st.title("Magic: The Gathering Card Similarity Finder")
-
-    # Load dataset
+    
     @st.cache_data
-    def load_data():
-        return pd.read_csv("/Users/thomasminahan/Desktop/Desktop_Aggregate/Mtg_code/MTG_SVD_fp_93205.csv")
+    def load_compressed_data_with_gdown(file_id):
+        # Google Drive download URL for gdown
+        url = f"https://drive.google.com/uc?id={file_id}"
+        
+        # Download the file using gdown
+        output = BytesIO()
+        gdown.download(url, output, quiet=False)
+        output.seek(0)  # Move to the start of the file
+        
+        # Load the compressed file
+        with gzip.open(output, "rt") as f:
+            return pd.read_csv(f)
 
-    mtg = load_data()
+    # Replace with your file ID
+    file_id = "1R47yAGvLk1EsMJ80Sv2NbqNV6rO1qNw2"
+    mtg = load_compressed_data_with_gdown(file_id)
+
+    mtg.head()
+
 
     # Sidebar inputs
     st.sidebar.header("Filter Options")
