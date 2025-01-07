@@ -147,7 +147,7 @@ def find_similar_cards_with_filters(df, card_name, n_neighbors=5, n_dimensions=1
 def main():
     st.title("Magic: The Gathering Card Similarity Finder")
     
-    @st.cache_data
+    #@st.cache_data
     def load_compressed_data_with_gdown(file_id):
         # Google Drive download URL for gdown
         url = f"https://drive.google.com/uc?id={file_id}"
