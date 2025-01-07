@@ -2,9 +2,6 @@ import pandas as pd
 import numpy as np
 import requests
 import streamlit as st
-import ast
-import gzip
-from io import BytesIO
 import gdown
 
 
