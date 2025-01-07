@@ -8,7 +8,6 @@ from io import BytesIO
 import gdown
 
 
-
 def get_card_details(card_name):
     """
     Fetches the image URL, price of the cheapest version of a card, and its Scryfall URI
