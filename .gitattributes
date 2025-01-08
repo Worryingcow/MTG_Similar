@@ -1,0 +1,2 @@
+MTG_SVD_fp_p3205.gz filter=lfs diff=lfs merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text
