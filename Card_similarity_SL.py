@@ -165,18 +165,22 @@ def main():
     file_id = "1R47yAGvLk1EsMJ80Sv2NbqNV6rO1qNw2"
     mtg = load_compressed_data_with_gdown(file_id)
 
-    mtg.head()
+    # Initialize session state for the card name
+    if "card_name" not in st.session_state:
+        st.session_state["card_name"] = "Counterspell"
 
     # Sidebar inputs
     st.sidebar.header("Filter Options")
 
     # Card randomization logic
     if st.sidebar.button("Randomize Card"):
-        random_card = mtg.sample(1)["name"].values[0]
-    else:
-        random_card = "Counterspell"  # Default card
+        st.session_state["card_name"] = mtg.sample(1)["name"].values[0]
 
-    card_name = st.sidebar.text_input("Enter the name of a card:", random_card, autocomplete="on")
+    # Use the card name from session state
+    card_name = st.sidebar.text_input("Enter the name of a card:", st.session_state["card_name"], autocomplete="on")
+    # Update the session state if the user manually enters a new card name
+    st.session_state["card_name"] = card_name
+
     n_neighbors = st.sidebar.slider("Number of similar cards to display:", 1, 20, 5)
     deck_colors = st.sidebar.text_input("Deck colors (e.g., 'WB' for white-black):", "")
     type_line = st.sidebar.text_input("Type line filter (e.g., 'Instant', 'Creature'):", "")
@@ -255,4 +259,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
