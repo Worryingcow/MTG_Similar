@@ -167,10 +167,16 @@ def main():
 
     mtg.head()
 
-
     # Sidebar inputs
     st.sidebar.header("Filter Options")
-    card_name = st.sidebar.text_input("Enter the name of a card:", "Counterspell", autocomplete="on")
+
+    # Card randomization logic
+    if st.sidebar.button("Randomize Card"):
+        random_card = mtg.sample(1)["name"].values[0]
+    else:
+        random_card = "Counterspell"  # Default card
+
+    card_name = st.sidebar.text_input("Enter the name of a card:", random_card, autocomplete="on")
     n_neighbors = st.sidebar.slider("Number of similar cards to display:", 1, 20, 5)
     deck_colors = st.sidebar.text_input("Deck colors (e.g., 'WB' for white-black):", "")
     type_line = st.sidebar.text_input("Type line filter (e.g., 'Instant', 'Creature'):", "")
@@ -189,8 +195,7 @@ def main():
         try:
             # Fetch the details of the selected card
             input_image_url, input_price, input_scryfall_uri = get_card_details(card_name)
-    
-         
+
             if input_price:
                 st.sidebar.write(f"**Cheapest Printing Price:** ${input_price:.2f}")
             else:
@@ -206,7 +211,7 @@ def main():
                 type_line=type_line,
                 commander_legal=commander_legal
             )
-    
+
             st.write("### Similar Cards")
             for _, row in similar_cards.iterrows():
                 image_url, price, scryfall_uri = get_card_details(row["name"])
@@ -243,13 +248,9 @@ def main():
                             st.write("**Price Difference:** Not available")
                     else:
                         st.write("**Price:** Not available")
-    
+
         except ValueError as e:
             st.error(str(e))
-
-
-
-
 
 
 if __name__ == "__main__":
